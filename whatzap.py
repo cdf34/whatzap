@@ -23,7 +23,9 @@ async def on_message(message):
         lower = message.content.lower()
         for c in commands_dict:
             if lower.startswith(c):
-                await commands_dict[c](state, message, message.content[len(c) + 1:])
+                content = message.content[len(c):]
+                if not content or content[0] == " ":
+                    await commands_dict[c](state, message, content[1:])
     elif message.channel.id in state.channels["automatic"]:
         await user.send_as_self(state, message, message.content)
 

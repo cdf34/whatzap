@@ -1,17 +1,23 @@
 import discord
 
 async def _list_pcs(state, context, full):
-    to_send = "List of player characters:"
+    embed = discord.Embed()
+    embed.description = "List of player characters:"
     for user, character in state.users.items():
-        to_send += f"\n{user}: {character.name}"
+        name = f"\n{user}: {character.name}"
         if character.alias != character.name:
-            to_send += f" (alias {character.alias})"
+            name += f" (alias {character.alias})"
         if full and character.description is not None:
-            to_send += "\n> " + character.description
-    await context.channel.send(to_send)
+            embed.add_field(name=name, value=character.description, inline=False)
+        else:
+            embed.add_field(name=name, value="_ _", inline=False)
+    await context.channel.send(embed=embed)
 
 async def list_pcs(state, context, message):
-    await _list_pcs(state, context, message=="full")
+    await _list_pcs(state, context, False)
+
+async def list_pcs_full(state, context, message):
+    await _list_pcs(state, context, True)
 
 def _npc_key(npc):
     score = npc.messages_sent
@@ -41,7 +47,10 @@ async def _list_npcs(state, context, full):
     await context.channel.send(embed=embed)
 
 async def list_npcs(state, context, message):
-    await _list_npcs(state, context, message=="full")
+    await _list_npcs(state, context, False)
+
+async def list_npcs_full(state, context, message):
+    await _list_npcs(state, context, True)
 
 async def help(state, context, message):
     with open("docs/help.txt") as f:
@@ -89,7 +98,10 @@ async def whois(state, context, target):
 
     if character:
         description = character.description if character.description is not None else f"{character.name} does not have a description set."
-        embed = discord.Embed(title=character.name, description=description)
+        title = character.name
+        if character.alias != character.name:
+            title += f" (alias {character.alias})"
+        embed = discord.Embed(title=title, description=description)
         if character.get_avatar() is not None:
             embed.set_thumbnail(url=character.get_avatar())
         await context.channel.send(embed=embed)

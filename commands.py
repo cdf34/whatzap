@@ -25,7 +25,9 @@ bot_commands = {
     ",help": info.help,
     ",commands": info.commands,
     ",list-pcs": info.list_pcs,
+    ",list-pcs-full": info.list_pcs_full,
     ",list-npcs": info.list_npcs,
+    ",list-npcs-full": info.list_npcs_full,
     ",whois": info.whois,
     ",who-is": info.whois,
 }
