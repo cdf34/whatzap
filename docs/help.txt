@@ -1,0 +1,7 @@
+Quick start guide:
+Post `,name` then your character name (e.g. `,name Ishtar Lowlands`) to get started.
+Once you've done this, all posts in #in-game-group-text will appear as your character.
+Add a photo with caption `,avatar` to set your avatar.
+Send a message as your character by preceding the message with two commas (e.g. `,,Good morning` will send "Good morning" as your character).
+Send a message as an NPC by preceding the message with a comma then the NPC's name (e.g. `,Iris I'm a snake` will send "I'm a snake" as Iris).
+Send a message `,commands` to see a full list of commands.

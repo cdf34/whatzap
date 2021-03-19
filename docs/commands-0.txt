@@ -1,0 +1,4 @@
+If you prefix a message with ,, it will send as your character (if you have one)
+Available commands:
+(Dollar signs indicate things you can change rather than being part of the command.)
+All names can have spaces. Names in commands are not case-sensitive.

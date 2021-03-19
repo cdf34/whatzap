@@ -1,0 +1,2 @@
+,name $new-name 
+    Sets your character's name. If you don't have one it creates one.

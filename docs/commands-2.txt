@@ -1,0 +1,16 @@
+,npc-create $name
+    Creates an NPC. 
+,npc-avatar $name $avatar-url-or-image
+    Sets an NPC's avatar.
+    $avatar-url-or-image can be a URL to an image or you can upload an image using Discord's upload function.
+    If you use the latter, if the message is deleted then the avatar will stop working.
+,npc-alias $name $alias 
+    Sets an NPC's alias. Any commands that require an NPC name can use their alias instead.
+,npc-send $name $message
+    Sends a message as an NPC.
+,$name $message
+    Shorter way to send a message as an NPC.
+,npc-rename $name $new_name
+    Renames an NPC.
+,npc-remove $name
+    Removes an NPC.

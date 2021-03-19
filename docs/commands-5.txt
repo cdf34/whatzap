@@ -1,0 +1,9 @@
+,give-access $user
+    Lets another user send messages as your character. $user should be the full discord name e.g. naverag#7241.
+    They send messages the same way as for NPCs, i.e. ,$name $message 
+,check-access
+    Lists who has access to send as your character.
+,remove-access $user
+    Removes the permission for another user to send messages as your character.
+,alias $alias
+    Sets your alias. Any commands that require a PC name can use their alias instead.

@@ -1,0 +1,4 @@
+,set-description $name $description
+    Sets a character's description. Can be an NPC's name or your own name. (Can use "me" instead of your own name). 
+,whois $name
+    Gets a character's description.

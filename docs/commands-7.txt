@@ -1,0 +1,12 @@
+,list-pcs
+    Get a list of current player characters.
+,list-pcs-full
+    Get a list of current player characters including descriptions.
+,list-npcs
+    Get a list of current NPCs.
+,list-npcs-full
+    Get a list of current NPCs including descriptions.
+,commands
+    Get this message.
+,help
+    Get a quick start help message.
