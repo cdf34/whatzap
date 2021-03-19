@@ -31,7 +31,7 @@ async def npc_rename(state, context, args):
 async def npc_alias(state, context, args):
     npc, alias = state.find_npc(args)
     if npc:
-        if await state.check_no_confusion(state, context, alias, [npc.name, npc.alias]):
+        if await state.check_no_confusion(context, alias, [npc.name, npc.alias]):
             npc.alias = alias
             state.save()
             state.update_commands()            
