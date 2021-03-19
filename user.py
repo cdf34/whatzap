@@ -8,7 +8,7 @@ async def send_as_self(state, context, message):
     character = get_author_character(state, context)
     if character:
         await context.delete()
-        await character.send_as(context.channel, message)
+        await character.send_as(context, message)
 
 async def set_name(state, context, name):
     character = get_author_character(state, context)

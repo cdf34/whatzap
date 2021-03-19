@@ -56,7 +56,7 @@ async def npc_send(state, context, args):
     npc, to_send = state.find_npc(args)
     if npc:
         await context.delete()
-        await npc.send_as(context.channel, to_send)
+        await npc.send_as(context, to_send)
     else:
         await context.channel.send(f"There is no NPC called that.")        
 
