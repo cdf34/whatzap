@@ -32,7 +32,7 @@ async def on_message(message):
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
 
-client.run('ODIxNzQzMjg5MjAyOTAxMDEy.YFIKEw.oi7IbqcR8CMng_V309ttt3p7D9E')
+with open('token') as f:
+    token = f.readline()
 
-"https://discord.com/api/oauth2/authorize?client_id=821743289202901012&permissions=603990080&scope=bot"
-"Should work to add the bot to other servers"
+client.run(token)
