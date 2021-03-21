@@ -30,13 +30,13 @@ def _npc_key(npc):
 async def _list_npcs(state, context, full):
     embed = discord.Embed()
     embed.description = "Current list of NPCs:\n"
-    embed.description += "* indicates they have a description, + indicates they have an avatar"
+    embed.description += "📝 indicates they have a description, 🖼 indicates they have an avatar"
     for npc in sorted(state.npcs, key=_npc_key, reverse=True):
         name = ""
         if npc.description is not None:
-            name += "*"
+            name += "📝"
         if npc.avatar is not None:
-            name += "+"
+            name += "🖼"
         name += npc.name
         if npc.alias != npc.name:
             name += f" (alias {npc.alias})"
@@ -58,38 +58,53 @@ async def help(state, context, message):
     await context.channel.send(to_send)
 
 async def commands(state, context, filter_text):
-    embed = discord.Embed()
+    embeds = []
+    embed_count = 0
+    embeds.append(discord.Embed())
     field_count = 0
     blank_before = True
 
     async def add_field(name, value):
-        # maximum field count in an embed is 25, so we have to send the message if we hit 25
-        nonlocal embed
+        # maximum field count in an embed is 25
+        # maximum embed count in a message is 10,
+        # so we have to send the message if we hit 10
+        nonlocal embeds
         nonlocal field_count
+        nonlocal embed_count
         nonlocal blank_before
         if blank_before:
-            embed.add_field(name='\u200B', value='\u200B', inline=False)
+            embeds[embed_count].add_field(name='\u200B', value='\u200B', inline=False)
             blank_before = False
             field_count += 1
-            if field_count == 25:    
-                await context.channel.send(embed=embed)
-                embed = discord.Embed()
+            if field_count == 25:
+                embed_count += 1
+                embeds.append(discord.Embed())
                 field_count = 0
-        embed.add_field(name=name, value=value, inline=False)
+            if embed_count == 10:
+                await context.channel.send(embeds=embeds)
+                field_count = 0
+                embeds.clear()
+                embed_count = 0
+        embeds[embed_count].add_field(name=name, value=value, inline=False)
         field_count += 1
-        if field_count == 25:    
-            await context.channel.send(embed=embed)
-            embed = discord.Embed()
+        if field_count == 25:
+            embed_count += 1
+            embeds.append(discord.Embed())
             field_count = 0
+        if embed_count == 10:
+            await context.channel.send(embeds=embeds)
+            field_count = 0
+            embeds.clear()
+            embed_count = 0
 
     for i in range(8):
         with open(f"docs/commands-{i}.txt") as f:
             if not i:
-                embed.description = "".join(f.readlines())
-                embed.description += "\nShowing all commands"
+                embeds[embed_count].description = "".join(f.readlines())
+                embeds[embed_count].description += "\nShowing all commands"
                 if filter_text:
-                    embed.description += f" containing {filter_text}"
-                embed.description += "."
+                    embeds[embed_count].description += f" containing {filter_text}"
+                embeds[embed_count].description += "."
                 continue
             name = None
             value = ""
@@ -105,8 +120,8 @@ async def commands(state, context, filter_text):
                 await add_field(name=name, value=value)
             blank_before = True
 
-    await context.channel.send(embed=embed)
-            
+    await context.channel.send(embeds=embeds)
+
 async def whois(state, context, target):
     character, _ = state.find_character(target)
 
