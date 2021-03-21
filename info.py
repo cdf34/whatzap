@@ -57,14 +57,24 @@ async def help(state, context, message):
         to_send = "".join(f.readlines())
     await context.channel.send(to_send)
 
-async def commands(state, context, message):
+async def commands(state, context, filter_text):
     embed = discord.Embed()
     field_count = 0
+    blank_before = True
 
     async def add_field(name, value):
         # maximum field count in an embed is 25, so we have to send the message if we hit 25
         nonlocal embed
         nonlocal field_count
+        nonlocal blank_before
+        if blank_before:
+            embed.add_field(name='\u200B', value='\u200B', inline=False)
+            blank_before = False
+            field_count += 1
+            if field_count == 25:    
+                await context.channel.send(embed=embed)
+                embed = discord.Embed()
+                field_count = 0
         embed.add_field(name=name, value=value, inline=False)
         field_count += 1
         if field_count == 25:    
@@ -76,20 +86,24 @@ async def commands(state, context, message):
         with open(f"docs/commands-{i}.txt") as f:
             if not i:
                 embed.description = "".join(f.readlines())
+                embed.description += "\nShowing all commands"
+                if filter_text:
+                    embed.description += f" containing {filter_text}"
+                embed.description += "."
                 continue
-            await add_field(name='\u200B', value='\u200B') # blank field for clearer spacing
             name = None
             value = ""
             for line in f:
                 if line.startswith(" "):
                     value += line
                 else:
-                    if name is not None:
+                    if name is not None and filter_text in name:
                         await add_field(name=name, value=value)
                     name = line.strip()
                     value = ""
-            if name is not None:
+            if name is not None and filter_text in name:
                 await add_field(name=name, value=value)
+            blank_before = True
 
     await context.channel.send(embed=embed)
             

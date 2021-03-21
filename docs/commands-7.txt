@@ -6,7 +6,7 @@
     Get a list of current NPCs.
 ,list-npcs-full
     Get a list of current NPCs including descriptions.
-,commands
-    Get this message.
+,commands $filter-text
+    Get a list of commands. If $filter_text is set, gets all commands containing $filter_text as a substring.
 ,help
     Get a quick start help message.
