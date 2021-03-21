@@ -2,15 +2,23 @@ from state import State
 
 
 def add_attr(attr, default=lambda x: None):
-    state = State()
+    state = State(690249317646073856)
     state.load()
     for npc in state.npcs:
         if not hasattr(npc, attr):
-            setattr(npc, attr, default(npc))
+            print(f"{npc.name} does not have attr {attr}.")
+            # setattr(npc, attr, default(npc))
+        else:
+            print(f"{npc.name}: {getattr(npc, attr)}.")
     for user, pc in state.users.items():
         if not hasattr(pc, attr):
-            setattr(pc, attr, default(pc))
-    state.save()
+            print(f"{pc.name} does not have attr {attr}.")
+            # setattr(npc, attr, default(npc))
+        else:
+            # if getattr(pc, attr) is None:
+            #     setattr(pc, attr, [user])
+            print(f"{pc.name}: {getattr(pc, attr)}.")
+        state.save()
 
 #  add_attr("avatars", default=lambda x: dict())
 
@@ -58,4 +66,4 @@ def avatars_manage():
                         c.avatar = "default"
     state.save()
 
-avatars_manage()
+add_attr("permissions")

@@ -1,12 +1,12 @@
-,avatar $avatar-url-or-image
-    Sets your character's avatar. Also adds it as a switchable avatar with key default.
+,avatar $character $avatar-url-or-image
+    Sets a character's avatar. Also adds it as a switchable avatar with key default.
     $avatar-url-or-image can be a URL to an image or you can upload an image using Discord's upload function.
     If you use the latter, if the message is deleted then the avatar will stop working.
-,avatar $key $avatar-url-or-image
+,avatar $character $key $avatar-url-or-image
     Sets a switchable avatar with key $key.
-,switch-avatar $key
-    Switches to one of your switchable avatars.
-,list-avatars
-    List your switchable avatars.
-,remove-avatar $key
-    Removes a switchable avatar. If it's your current avatar, clears your current avatar as well.
+,switch-avatar $character $key
+    Switches to one of $character's switchable avatars.
+,list-avatars $character
+    List $character's switchable avatars.
+,remove-avatar $character $key
+    Removes a switchable avatar. If it's the current avatar, clears your current avatar as well.

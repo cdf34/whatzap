@@ -38,24 +38,45 @@ class State:
             pickle.dump(self.channels, f)
 
     def find_npc(self, message):
+        print("Deprecated")
         lower = message.lower()
-        for npc in self.npcs:
-            if lower.startswith(npc.name.lower()):
-                return npc, message[len(npc.name) + 1:]
-            elif lower.startswith(npc.alias.lower()):
-                return npc, message[len(npc.alias) + 1:]
         return None, message
 
-    def find_character(self, message):
-        npc, message = self.find_npc(message)
-        if npc:
-            return npc, message
+    async def find_character(self, context, message):
+        lower = message.lower() + " "
+        if lower.startswith("me "):
+            character = self.users.get(str(context.author))
+            if character:
+                return character, message[3:]
+            await context.channel.send("You do not yet have a character. Create one with `,name character-name`.")
+            return None, message
         for character in self.users.values():
-            lower = message.lower()
-            if lower.startswith(character.name.lower()):
+            if lower.startswith(character.name.lower() + " "):
                 return character, message[len(character.name) + 1:]
-            elif lower.startswith(character.alias.lower()):
+            elif lower.startswith(character.alias.lower() + " "):
                 return character, message[len(character.alias) + 1:]
+        for npc in self.npcs:
+            if lower.startswith(npc.name.lower() + " "):
+                return npc, message[len(npc.name) + 1:]
+            elif lower.startswith(npc.alias.lower() + " "):
+                return npc, message[len(npc.alias) + 1:]
+        if message.startswith("<@") and len(context.mentions) > 0:
+            if len(context.mentions) == 1:
+                character = self.users.get(str(context.mentions[0]))
+                if character:
+                    return character, message[message.index(">") + 2:]
+            else:
+                id = message[2:message.index(">")]
+                if id.startswith("!"):
+                    id = id[1:]
+                id = int(id)
+                for user in context.mentions:
+                    if user.id == id:
+                        character = self.users.get(str(user))
+                        if character:
+                            return character, message[message.index(">") + 2:]
+
+        await context.channel.send("That character does not appear to exist.")
         return None, message
 
     async def log(self, message, text_to_log):
