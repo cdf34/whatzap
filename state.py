@@ -13,7 +13,7 @@ class State:
             os.mkdir(self.save_folder)
             self.users = {}
             self.npcs = []
-            self.channels = {}
+            self.channels = {"automatic": []}
             self.save()
         else:
             self.load()
@@ -48,7 +48,7 @@ class State:
             character = self.users.get(str(context.author))
             if character:
                 return character, message[3:]
-            await context.channel.send("You do not yet have a character. Create one with `,name character-name`.")
+            await context.channel.send("You do not yet have a character. Create one with `,create-pc character-name`.")
             return None, message
         for character in self.users.values():
             if lower.startswith(character.name.lower() + " "):
