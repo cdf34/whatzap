@@ -107,17 +107,12 @@ async def commands(state, context, filter_text):
 
     await context.channel.send(embed=embed)
             
-async def whois(state, context, target):
-    character, _ = state.find_character(target)
-
-    if character:
-        description = character.description if character.description is not None else f"{character.name} does not have a description set."
-        title = character.name
-        if character.alias != character.name:
-            title += f" (alias {character.alias})"
-        embed = discord.Embed(title=title, description=description)
-        if character.get_avatar() is not None:
-            embed.set_thumbnail(url=character.get_avatar())
-        await context.channel.send(embed=embed)
-    else:
-        await context.channel.send(f"Cannot find character {target}.")
+async def whois(state, context, character, args):
+    description = character.description if character.description is not None else f"{character.name} does not have a description set."
+    title = character.name
+    if character.alias != character.name:
+        title += f" (alias {character.alias})"
+    embed = discord.Embed(title=title, description=description)
+    if character.get_avatar() is not None:
+        embed.set_thumbnail(url=character.get_avatar())
+    await context.channel.send(embed=embed)

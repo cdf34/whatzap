@@ -1,4 +1,6 @@
-,set-description $name $description
-    Sets a character's description. Can be an NPC's name or your own name. (Can use "me" instead of your own name). 
-,whois $name
-    Gets a character's description.
+,send-as $character $message
+    Alternative way to send a message as a character, if you have permission to do so.
+,rename $character $new-name
+    Rename a character.
+,remove-npc $character
+    Removes an NPC.

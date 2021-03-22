@@ -1,2 +1,8 @@
-,name $new-name 
-    Sets your character's name. If you don't have one it creates one.
+,create-pc $name 
+    Creates a character for you with name $name.
+,create-npc $name
+    Creates an NPC with name $name.
+,$name $message
+    Sends a message as the character with name $name, if you have permission to do so.
+,,$message
+    Sends a message as your character.

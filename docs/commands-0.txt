@@ -1,4 +1,3 @@
-If you prefix a message with ,, it will send as your character (if you have one)
-
-(Dollar signs indicate things you can change rather than being part of the command.)
-All names can have spaces. Names in commands are not case-sensitive.
+Dollar signs indicate things you can change rather than being part of the command.
+All names can have spaces. Names in commands are not case-sensitive. When referring to yourself you can use `me` instead of your character's name or alias.
+At the moment, everyone has permission to change anything about an NPC, but users are the only ones who can change things about their own character.

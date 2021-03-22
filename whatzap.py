@@ -1,9 +1,7 @@
 # todo: avatar error checking
 
 from state import State
-import user
-import npc
-import info
+import character
 import discord
 
 
@@ -18,7 +16,7 @@ async def on_message(message):
     state = states[message.guild.id]
     commands_dict = state.commands
     if message.content.startswith(",,"):
-        await user.send_as_self(state, message, message.content[2:])
+        await character.send_as_self(state, message, message.content[2:])
     elif message.content.startswith(","):
         lower = message.content.lower()
         for c in commands_dict:
@@ -27,7 +25,7 @@ async def on_message(message):
                 if not content or content[0] == " ":
                     await commands_dict[c](state, message, content[1:])
     elif message.channel.id in state.channels["automatic"]:
-        await user.send_as_self(state, message, message.content)
+        await character.send_as_self(state, message, message.content)
 
 
 @client.event
