@@ -14,10 +14,14 @@ class State:
             os.mkdir(self.save_folder)
             self.users = {}
             self.npcs = []
-            self.channels = {"automatic": []}
+            self.channels = {"automatic": set(), "rolling-initiative": set()}
             self.save()
         else:
             self.load()
+            self.channels["rolling-initiative"] = set()
+            if isinstance(self.channels["automatic"], list):
+                self.channels["automatic"] = set(self.channels["automatic"])
+
         self.update_commands()
         
     def load(self):
@@ -43,7 +47,7 @@ class State:
         lower = message.lower()
         return None, message
 
-    async def find_character(self, context, message):
+    async def find_character(self, context, message, error_on_not_found=True):
         lower = message.lower() + " "
         if lower.startswith("me "):
             character = self.users.get(str(context.author))
@@ -77,7 +81,8 @@ class State:
                         if character:
                             return character, message[message.index(">") + 2:]
 
-        await context.channel.send("That character does not appear to exist.")
+        if error_on_not_found:
+            await context.channel.send("That character does not appear to exist.")
         return None, message
 
     async def log(self, message, text_to_log):

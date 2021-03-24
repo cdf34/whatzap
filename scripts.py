@@ -1,26 +1,20 @@
+import os
 from state import State
 
 
 def add_attr(attr, default=lambda x: None):
-    state = State(690249317646073856)
-    state.load()
-    for npc in state.npcs:
-        if not hasattr(npc, attr):
-            print(f"{npc.name} does not have attr {attr}.")
-            # setattr(npc, attr, default(npc))
-        else:
-            print(f"{npc.name}: {getattr(npc, attr)}.")
-    for user, pc in state.users.items():
-        if not hasattr(pc, attr):
-            print(f"{pc.name} does not have attr {attr}.")
-            # setattr(npc, attr, default(npc))
-        else:
-            # if getattr(pc, attr) is None:
-            #     setattr(pc, attr, [user])
-            print(f"{pc.name}: {getattr(pc, attr)}.")
-        state.save()
+    for file in os.listdir("save"):
+        if os.path.isdir(os.path.join("save", file)):
+            state = State(int(file), None)
+            for c in state.npcs:
+                if not hasattr(c, attr):
+                    setattr(c, attr, default(c))
+            for user, c in state.users.items():
+                if not hasattr(c, attr):
+                    setattr(c, attr, default(c))
+            state.save()
 
-#  add_attr("avatars", default=lambda x: dict())
+add_attr("init_modifier") 
 
 def avatars_manage():
     state = State(690249317646073856)
@@ -66,4 +60,3 @@ def avatars_manage():
                         c.avatar = "default"
     state.save()
 
-add_attr("permissions")

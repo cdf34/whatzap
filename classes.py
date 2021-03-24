@@ -20,6 +20,7 @@ class Character:
         self.alias = name
         self.permissions = None
         self.messages_sent = 0
+        self.init_modifier = None
 
     async def send_as(self, context, message):
         webhook = await get_webhook(context.channel)

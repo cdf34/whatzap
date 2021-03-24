@@ -32,7 +32,14 @@ class CharacterCommand:
             else:
                 await context.channel.send(f"You do not have permission to do that to {character.name}.")
 
-
+class OptionalCharacterCommand(CharacterCommand):
+    async def __call__(self, state, context, args):
+        character, args = await state.find_character(context, args, error_on_not_found=False)
+        if character is None or self.permissions_func(state, character, str(context.author)):
+            return await self.func(state, context, character, args)
+        else:
+            await context.channel.send(f"You do not have permission to do that to {character.name}.")
+            return False
 
 bot_commands = {
     ",create-pc": character.pc_create,
@@ -61,11 +68,12 @@ bot_commands = {
     ",whois": CharacterCommand(info.whois, permissions_func=whois_permissions),
     ",who-is": CharacterCommand(info.whois, permissions_func=whois_permissions),
 
-    ",initiative-start": dnd.initiative_start,
-    ",initiative-add": CharacterCommand(dnd.initiative_add, permissions_func=whois_permissions),
-    # ",initiative-monster": dnd.initiative_monster,
+    ",init-start": dnd.initiative_start,
+    ",init-add": OptionalCharacterCommand(dnd.initiative_add_loud, permissions_func=whois_permissions),
+    ",init-modifier": CharacterCommand(dnd.initiative_modifier),
 }
 
+auto_init = OptionalCharacterCommand(dnd.initiative_add_quiet, permissions_func=whois_permissions)
 
 async def parse_command(state, message):
     commands_dict = state.commands
@@ -78,5 +86,7 @@ async def parse_command(state, message):
                 content = message.content[len(c):]
                 if not content or content[0] == " ":
                     await commands_dict[c](state, message, content[1:])
+    elif message.channel.id in state.channels["rolling-initiative"] and await auto_init(state, message, message.content):
+        pass
     elif message.channel.id in state.channels["automatic"]:
         await character.send_as_self(state, message, message.content)
