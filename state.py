@@ -6,8 +6,9 @@ from collections import defaultdict
 from commands import bot_commands
 
 class State:
-    def __init__(self, server_id):
+    def __init__(self, server_id, client):
         self.server_id = server_id
+        self.client = client
         self.save_folder = os.path.join("save", str(server_id))
         if not os.path.isdir(self.save_folder):
             os.mkdir(self.save_folder)

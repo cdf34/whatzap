@@ -1,4 +1,5 @@
 import character
+import dnd
 import info
 import channels
 from classes import NPC
@@ -33,7 +34,6 @@ class CharacterCommand:
 
 
 
-
 bot_commands = {
     ",create-pc": character.pc_create,
     ",create-npc": character.npc_create,
@@ -60,4 +60,23 @@ bot_commands = {
     ",list-npcs-full": info.list_npcs_full,
     ",whois": CharacterCommand(info.whois, permissions_func=whois_permissions),
     ",who-is": CharacterCommand(info.whois, permissions_func=whois_permissions),
+
+    ",initiative-start": dnd.initiative_start,
+    ",initiative-add": CharacterCommand(dnd.initiative_add, permissions_func=whois_permissions),
+    # ",initiative-monster": dnd.initiative_monster,
 }
+
+
+async def parse_command(state, message):
+    commands_dict = state.commands
+    if message.content.startswith(",,"):
+        await character.send_as_self(state, message, message.content[2:])
+    elif message.content.startswith(","):
+        lower = message.content.lower()
+        for c in commands_dict:
+            if lower.startswith(c):
+                content = message.content[len(c):]
+                if not content or content[0] == " ":
+                    await commands_dict[c](state, message, content[1:])
+    elif message.channel.id in state.channels["automatic"]:
+        await character.send_as_self(state, message, message.content)
