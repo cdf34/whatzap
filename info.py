@@ -113,6 +113,16 @@ async def whois(state, context, character, args):
     if character.alias != character.name:
         title += f" (alias {character.alias})"
     embed = discord.Embed(title=title, description=description)
-    if character.get_avatar() is not None:
-        embed.set_thumbnail(url=character.get_avatar())
+    avatar = character.get_avatar()
+    if avatar is not None:
+        if "whois" in character.avatars:
+            avatar = character.avatars["whois"]
+        embed.set_thumbnail(url=avatar)
+    
+    footer_parts = []
+    for user, pc in state.users.items():
+        if pc is character:
+            footer_parts.append(f"Player character for {user}")
+    footer_parts.append(f"Messages sent: {character.messages_sent}")
+    embed.set_footer(text=" -- ".join(footer_parts))
     await context.channel.send(embed=embed)
