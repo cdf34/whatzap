@@ -30,13 +30,13 @@ def _npc_key(npc):
 async def _list_npcs(state, context, full):
     embed = discord.Embed()
     embed.description = "Current list of NPCs:\n"
-    embed.description += "* indicates they have a description, + indicates they have an avatar"
+    embed.description += "📝 indicates they have a description, 🖼 indicates they have an avatar"
     for npc in sorted(state.npcs, key=_npc_key, reverse=True):
         name = ""
         if npc.description is not None:
-            name += "*"
+            name += "📝"
         if npc.avatar is not None:
-            name += "+"
+            name += "🖼"
         name += npc.name
         if npc.alias != npc.name:
             name += f" (alias {npc.alias})"
