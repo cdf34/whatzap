@@ -69,8 +69,11 @@ bot_commands = {
     ",who-is": CharacterCommand(info.whois, permissions_func=whois_permissions),
 
     ",init-start": dnd.initiative_start,
+    ",initiative-start": dnd.initiative_start,
     ",init-add": OptionalCharacterCommand(dnd.initiative_add_loud, permissions_func=whois_permissions),
+    ",initiative-add": dnd.initiative_start,
     ",init-modifier": CharacterCommand(dnd.initiative_modifier),
+    ",initiative-modifier": dnd.initiative_start,
 }
 
 auto_init = OptionalCharacterCommand(dnd.initiative_add_quiet, permissions_func=whois_permissions)

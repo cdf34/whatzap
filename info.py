@@ -1,4 +1,5 @@
 import discord
+import os
 
 async def _list_pcs(state, context, full):
     embed = discord.Embed()
@@ -31,6 +32,19 @@ async def _list_npcs(state, context, full):
     embed = discord.Embed()
     embed.description = "Current list of NPCs:\n"
     embed.description += "📝 indicates they have a description, 🖼 indicates they have an avatar"
+    field_count = 0
+    
+    async def add_field(name, value):
+        # maximum field count in an embed is 25, so we have to send the message if we hit 25
+        nonlocal embed
+        nonlocal field_count
+        embed.add_field(name=name, value=value, inline=False)
+        field_count += 1
+        if field_count == 25:    
+            await context.channel.send(embed=embed)
+            embed = discord.Embed()
+            field_count = 0
+    
     for npc in sorted(state.npcs, key=_npc_key, reverse=True):
         name = ""
         if npc.description is not None:
@@ -41,9 +55,9 @@ async def _list_npcs(state, context, full):
         if npc.alias != npc.name:
             name += f" (alias {npc.alias})"
         if full and npc.description is not None:
-            embed.add_field(name=name, value=npc.description, inline=False)
+            await add_field(name=name, value=npc.description)
         else:
-            embed.add_field(name=name, value="_ _", inline=False)
+            await add_field(name=name, value="_ _")
     await context.channel.send(embed=embed)
 
 async def list_npcs(state, context, message):
@@ -52,12 +66,49 @@ async def list_npcs(state, context, message):
 async def list_npcs_full(state, context, message):
     await _list_npcs(state, context, True)
 
-async def help(state, context, message):
-    with open("docs/help.txt") as f:
-        to_send = "".join(f.readlines())
-    await context.channel.send(to_send)
+async def help(state, context, file):
+    files = sorted(list(os.listdir("docs/")), key=lambda x:int(x.split("-")[0]))
+    file_dict = {}
+    for f in files:
+        middle = (f.split("-")[1]).split(".")[0]
+        file_dict[middle] = f
+    if file in file_dict:
+        with open(os.path.join("docs", file_dict[file])) as f:
+            embed = discord.Embed()
+            name = None
+            value = ""
+            for j, line in enumerate(f):
+                if not j:
+                    embed.description = line.strip()
+                    continue
+                if file in ["quickstart", "syntax"]: # fix this
+                    embed.description += "\n" + line.strip()
+                    continue
+                if line.startswith(" "):
+                    value += line
+                else:
+                    if name is not None:
+                        embed.add_field(name=name, value=value, inline=False)
+                    name = line.strip()
+                    value = ""
+            if name is not None:
+                embed.add_field(name=name, value=value, inline=False)
+        await context.channel.send(embed=embed)
+    else:
+
+        embed = discord.Embed()
+        text = "The help is split into several sections. Send `help $section` to get that section. Possible sections:"
+        for desc, filename in file_dict.items():
+            with open(os.path.join("docs", filename)) as f:
+                line = f.readline().strip()
+                text += f"\n**{desc}**: {line}"
+        embed.description = text
+        await context.channel.send(embed=embed)
 
 async def commands(state, context, filter_text):
+    if filter_text == "":
+        await context.channel.send("Try `,help` if you want all the commands.")
+        return
     embed = discord.Embed()
     field_count = 0
     blank_before = True
@@ -82,9 +133,11 @@ async def commands(state, context, filter_text):
             embed = discord.Embed()
             field_count = 0
 
-    for i in range(8):
-        with open(f"docs/commands-{i}.txt") as f:
-            if not i:
+    for i, file in enumerate(sorted(list(os.listdir("docs/")), key=lambda x:int(x.split("-")[0]))):
+        with open(os.path.join("docs", file)) as f:
+            if i == 0:
+                continue
+            elif i == 1:
                 embed.description = "".join(f.readlines())
                 embed.description += "\nShowing all commands"
                 if filter_text:
@@ -93,7 +146,9 @@ async def commands(state, context, filter_text):
                 continue
             name = None
             value = ""
-            for line in f:
+            for j, line in enumerate(f):
+                if not j:
+                    continue
                 if line.startswith(" "):
                     value += line
                 else:

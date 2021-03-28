@@ -1,0 +1,14 @@
+Commands to do with initiative.
+,init-start
+    Creates an initiative tracker in this channel.
+    Until the "start" button is pressed, the channel is in auto-initiative mode: messages will be treated as initiatives (with the same syntax as init-add below) if they fit that syntax.
+,init-add [$name] $number
+    Add a character's initiative to an initiative tracker in this channel.
+    If $name is not set, adds your character's initiative.
+    If the character is already in the initiative order in this channel, gives you the option to replace it.
+,init-add [$name] roll $bonus
+    Rolls initiative for a character with bonus $bonus.
+,init-add [$name] roll
+    Rolls initiative for a character with the character's stored initiative bonus. Fails if the bonus is not set.
+,init-modifier $character bonus
+    Sets a character's initiative bonus.

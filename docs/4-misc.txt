@@ -1,0 +1,11 @@
+Miscellaneous commands to do with characters.
+,create-npc $name
+    Creates an NPC with name $name.
+,send-as $character $message
+    Alternative way to send a message as a character, if you have permission to do so.
+,rename $character $new-name
+    Rename a character.
+,remove-npc $character
+    Removes an NPC.
+,set-alias $character $alias
+    Sets a character's alias. Any commands that require a character name can use their alias instead.

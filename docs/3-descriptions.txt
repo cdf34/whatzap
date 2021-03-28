@@ -1,0 +1,5 @@
+Commands to do with character descriptions.
+,set-description $character $description
+    Sets a character's description. 
+,who-is $name
+    Gets a character's description.

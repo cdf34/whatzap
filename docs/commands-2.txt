@@ -1,6 +1,0 @@
-,set-alias $character $alias
-    Sets a character's alias. Any commands that require a character name can use their alias instead.
-,set-description $character $description
-    Sets a character's description. 
-,who-is $name
-    Gets a character's description.

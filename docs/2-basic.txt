@@ -1,7 +1,6 @@
+Basic commands to get you started with sending messages.
 ,create-pc $name 
     Creates a character for you with name $name.
-,create-npc $name
-    Creates an NPC with name $name.
 ,$name $message
     Sends a message as the character with name $name, if you have permission to do so.
 ,,$message

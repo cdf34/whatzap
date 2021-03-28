@@ -1,3 +1,4 @@
+Commands to change channel settings.
 ,channel-mode $mode
     Change the mode of the current channel. Currently $mode can be either "default" or "automatic".
     If a channels is in "automatic" mode then all messages will send as your character unless they start with a comma.

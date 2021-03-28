@@ -1,3 +1,4 @@
+Commands for getting information.
 ,list-pcs
     Get a list of current player characters.
 ,list-pcs-full
@@ -7,6 +8,7 @@
 ,list-npcs-full
     Get a list of current NPCs including descriptions.
 ,commands $filter-text
-    Get a list of commands. If $filter_text is set, gets all commands containing $filter_text as a substring.
-,help
-    Get a quick start help message.
+    Gets all commands containing $filter_text as a substring.
+,help [$section]
+    Get a list of help sections, or the help section specified in $section.
+    

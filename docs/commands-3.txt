@@ -1,6 +1,0 @@
-,send-as $character $message
-    Alternative way to send a message as a character, if you have permission to do so.
-,rename $character $new-name
-    Rename a character.
-,remove-npc $character
-    Removes an NPC.

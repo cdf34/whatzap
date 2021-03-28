@@ -1,3 +1,4 @@
+Commands to do with giving users permission to send as your character.
 ,give-access me $user
     Lets another user send messages as your character. $user should be the full discord name e.g. naverag#7241.
     They send messages the same way as for NPCs, i.e. ,$name $message

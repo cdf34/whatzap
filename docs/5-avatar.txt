@@ -1,3 +1,4 @@
+Commands to do with character avatars.
 ,set-avatar $character $avatar-url-or-image
     Sets a character's avatar. Also adds it as a switchable avatar with key default.
     $avatar-url-or-image can be a URL to an image or you can upload an image using Discord's upload function.
