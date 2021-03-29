@@ -14,7 +14,7 @@ class State:
             os.mkdir(self.save_folder)
             self.users = {}
             self.npcs = []
-            self.channels = {"automatic": set(), "rolling-initiative": set()}
+            self.channels = {"automatic": set(), "rolling-initiative": set(), "private-initiatives": dict()}
             self.save()
         else:
             self.load()

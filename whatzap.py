@@ -1,12 +1,16 @@
 # todo: avatar error checking
 
+from discord.flags import Intents
 from state import State
 from commands import parse_command
 import discord
+import dnd
 
 
 states = {}
-client = discord.Client()
+intents = discord.Intents.default()
+intents.members = True
+client = discord.Client(intents=intents)
 
 
 @client.event
@@ -16,8 +20,8 @@ async def on_message(message):
             states[message.guild.id] = State(message.guild.id, client)
         state = states[message.guild.id]
         await parse_command(state, message)
-    except Exception:
-        print(message)
+    except Exception as e:
+        print(message, e)
         raise
 
 @client.event
