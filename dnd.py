@@ -380,7 +380,7 @@ async def initiative_modifier(state, context, character, init_modifier):
             current = f"{'+' if character.init_modifier >= 0 else ''}{character.init_modifier}"
         else:
             current = "not set"
-        await context.channel.send(f"Your initiative modifier is currently {current}.")
+        await context.channel.send(f"{character.name}'s' initiative modifier is currently {current}.")
         return
     character.init_modifier = init_modifier
     state.save()

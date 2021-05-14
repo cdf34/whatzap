@@ -89,7 +89,7 @@ async def parse_command(state, message):
                 content = message.content[len(c):]
                 if not content or content[0] == " ":
                     await commands_dict[c](state, message, content[1:])
-    elif message.channel.id in state.channels["rolling-initiative"] and await auto_init(state, message, message.content):
+    elif message.channel.id in state.channels["rolling-initiative"] and len(message.content) and await auto_init(state, message, message.content):
         pass
     elif message.channel.id in state.channels["automatic"]:
         await character.send_as_self(state, message, message.content)

@@ -14,13 +14,18 @@ class State:
             os.mkdir(self.save_folder)
             self.users = {}
             self.npcs = []
-            self.channels = {"automatic": set(), "rolling-initiative": set(), "private-initiatives": dict()}
+            self.channels = defaultdict(set)
+            self.channels["private-initiatives"] = dict()
             self.save()
         else:
             self.load()
             self.channels["rolling-initiative"] = set()
             if isinstance(self.channels["automatic"], list):
                 self.channels["automatic"] = set(self.channels["automatic"])
+            if not isinstance(self.channels, defaultdict):
+                temp = self.channels
+                self.channels = defaultdict(set)
+                self.channels.update(temp)
 
         self.update_commands()
         
