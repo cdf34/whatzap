@@ -60,6 +60,7 @@ bot_commands = {
 
     ",channel-mode": channels.channel_mode,
     ",help": info.help,
+    ",hguolp": info.hguolp,
     ",commands": info.commands,
     ",list-pcs": info.list_pcs,
     ",list-pcs-full": info.list_pcs_full,

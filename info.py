@@ -117,7 +117,7 @@ async def _help(state, context, file, reverse):
 async def help(state, context, file):
     await _help(state, context, file, reverse=False)
 
-async def hgoulp(state, context, file):
+async def hguolp(state, context, file):
     await _help(state, context, file, reverse=True)
 
 
