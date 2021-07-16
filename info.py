@@ -66,7 +66,7 @@ async def list_npcs(state, context, message):
 async def list_npcs_full(state, context, message):
     await _list_npcs(state, context, True)
 
-async def help(state, context, file):
+async def _help(state, context, file, reverse):
     files = sorted(list(os.listdir("docs/")), key=lambda x:int(x.split("-")[0]))
     file_dict = {}
     for f in files:
@@ -88,10 +88,16 @@ async def help(state, context, file):
                     value += line
                 else:
                     if name is not None:
+                        if reverse:
+                            name = name[::-1]
+                            value = value[::-1]
                         embed.add_field(name=name, value=value, inline=False)
                     name = line.strip()
                     value = ""
             if name is not None:
+                if reverse:
+                    name = name[::-1]
+                    value = value[::-1]
                 embed.add_field(name=name, value=value, inline=False)
         await context.channel.send(embed=embed)
     else:
@@ -102,8 +108,19 @@ async def help(state, context, file):
             with open(os.path.join("docs", filename)) as f:
                 line = f.readline().strip()
                 text += f"\n**{desc}**: {line}"
+        if reverse:
+            text = text[::-1]
         embed.description = text
         await context.channel.send(embed=embed)
+
+
+async def help(state, context, file):
+    await _help(state, context, file, reverse=False)
+
+async def hgoulp(state, context, file):
+    await _help(state, context, file, reverse=True)
+
+
 
 async def commands(state, context, filter_text):
     if filter_text == "":
