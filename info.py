@@ -72,6 +72,8 @@ async def _help(state, context, file, reverse):
     for f in files:
         middle = (f.split("-")[1]).split(".")[0]
         file_dict[middle] = f
+    if reverse:
+        file = file[::-1]
     if file in file_dict:
         with open(os.path.join("docs", file_dict[file])) as f:
             embed = discord.Embed()
@@ -79,6 +81,8 @@ async def _help(state, context, file, reverse):
             value = ""
             for j, line in enumerate(f):
                 if not j:
+                    if reverse:
+                        line = line[::-1]
                     embed.description = line.strip()
                     continue
                 if file in ["quickstart", "syntax"]: # fix this
