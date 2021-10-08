@@ -50,7 +50,7 @@ async def reminder_channel(state, context, message):
 @tasks.loop(minutes=1)
 async def schedule_loop(states):
     now = bst.fromutc(datetime.datetime.utcnow())
-    for state in states:
+    for state in states.values():
         if state.event["time"] is None:
             continue
         for delta, used, text in state.event["reminders"]:
