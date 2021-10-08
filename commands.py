@@ -2,6 +2,7 @@ import character
 import dnd
 import info
 import channels
+import schedule
 from classes import NPC
 
 def default_permissions(state, character, author):
@@ -75,6 +76,10 @@ bot_commands = {
     ",initiative-add": dnd.initiative_start,
     ",init-modifier": CharacterCommand(dnd.initiative_modifier),
     ",initiative-modifier": dnd.initiative_start,
+
+    ",schedule": schedule.schedule,
+    ",schedule-reminders": schedule.schedule_reminders,
+    ",reminder-channel": schedule.reminder_channel,
 }
 
 auto_init = OptionalCharacterCommand(dnd.initiative_add_quiet, permissions_func=whois_permissions)

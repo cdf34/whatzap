@@ -5,21 +5,25 @@ from collections import defaultdict
 
 from commands import bot_commands
 
+
 class State:
     def __init__(self, server_id, client):
         self.server_id = server_id
         self.client = client
         self.save_folder = os.path.join("save", str(server_id))
+
+        self.users = {}
+        self.npcs = []
+        self.channels = defaultdict(set)
+        self.channels["private-initiatives"] = dict()
+
+        self.event = {"time": None, "reminders": []}
+
         if not os.path.isdir(self.save_folder):
             os.mkdir(self.save_folder)
-            self.users = {}
-            self.npcs = []
-            self.channels = defaultdict(set)
-            self.channels["private-initiatives"] = dict()
             self.save()
         else:
             self.load()
-            self.channels["rolling-initiative"] = set()
             if isinstance(self.channels["automatic"], list):
                 self.channels["automatic"] = set(self.channels["automatic"])
             if not isinstance(self.channels, defaultdict):
@@ -27,17 +31,21 @@ class State:
                 self.channels = defaultdict(set)
                 self.channels.update(temp)
 
+        self.channels["rolling-initiative"] = set()
         self.update_commands()
         
+    def _load_if_exists(self, pname, attr):
+        try:
+            with open(os.path.join(self.save_folder, pname), "rb") as f:
+                setattr(self, attr, pickle.load(f))
+        except FileNotFoundError:
+            pass
+    
     def load(self):
-        with open(os.path.join(self.save_folder, "users.p"), "rb") as f:
-            self.users = pickle.load(f)
-        with open(os.path.join(self.save_folder, "npcs.p"), "rb") as f:
-            self.npcs = pickle.load(f)
-        with open(os.path.join(self.save_folder, "channels.p"), "rb") as f:
-            self.channels = pickle.load(f)
-            if isinstance(self.channels, list):
-                self.channels = defaultdict(set)
+        self._load_if_exists("users.p", "users")
+        self._load_if_exists("npcs.p", "npcs")
+        self._load_if_exists("channels.p", "channels")
+        self._load_if_exists("event.p", "event")
 
     def save(self):
         with open(os.path.join(self.save_folder, "users.p"), "wb") as f:
@@ -46,6 +54,8 @@ class State:
             pickle.dump(self.npcs, f)
         with open(os.path.join(self.save_folder, "channels.p"), "wb") as f:
             pickle.dump(self.channels, f)
+        with open(os.path.join(self.save_folder, "event.p"), "wb") as f:
+            pickle.dump(self.event, f)
 
     def find_npc(self, message):
         print("Deprecated")

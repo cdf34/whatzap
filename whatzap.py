@@ -1,23 +1,25 @@
 # todo: avatar error checking
+from collections import defaultdict
+import os
 
-from discord.flags import Intents
+import discord
+
 from state import State
 from commands import parse_command
-import discord
-import dnd
+import schedule
 
-
-states = {}
+states = defaultdict(lambda id: State(id, client))
 intents = discord.Intents.default()
 intents.members = True
 client = discord.Client(intents=intents)
 
+for str_id in os.listdir("save"):
+    id = int(str_id)
+    states[id] = State(id, client)
 
 @client.event
 async def on_message(message):
     try:
-        if message.guild.id not in states:
-            states[message.guild.id] = State(message.guild.id, client)
         state = states[message.guild.id]
         await parse_command(state, message)
     except Exception as e:
@@ -31,4 +33,5 @@ async def on_ready():
 with open('token') as f:
     token = f.readline()
 
+schedule.schedule_loop.start(states)
 client.run(token)
