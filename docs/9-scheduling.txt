@@ -1,0 +1,7 @@
+Commands to do with scheduling events.
+,schedule $time-and-date
+    Schedule the next event to be at $time-and-date. Fairly good at parsing different time and date forms. Currently assumes all times are GMT/BST. 
+,schedule-reminders $args
+    Sets when the bot will remind everyone of the event. $args should be a comma-separated list, with each entry being a number followed by either "m" for minutes or "h" for hours. E.g. ,schedule-reminders 5m, 1h, 24h
+,reminder-channel [on/off]
+    Turns event reminders in this channel on or off.
