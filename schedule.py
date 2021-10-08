@@ -35,7 +35,7 @@ async def schedule_reminders(state, context, message):
         elif r[-1] == "m":
             state.event["reminders"].append([datetime.timedelta(minutes=val), False, f"{val} minutes"])
     reminders_update(state)
-    await state.log(context, f"Set reminders for events to be {', '.join(x[2] for x in state.event['reminders'])} before the event."))
+    await state.log(context, f"Set reminders for events to be {', '.join(x[2] for x in state.event['reminders'])} before the event.")
 
 async def reminder_channel(state, context, message):
     if message == "on":
