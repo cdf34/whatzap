@@ -18,7 +18,7 @@ def reminders_update(state):
 
 async def schedule(state, context, message):
     time = dateparser.parse(message)
-    state.event["time"] = time
+    state.event["time"] = bst.localize(time)
     reminders_update(state)
     await state.log(context, f"Scheduled event for {time.strftime('%H:%M on %d/%m/%Y')} BST/GMT.")
 
