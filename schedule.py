@@ -9,7 +9,7 @@ bst = pytz.timezone("Europe/London")
 def reminders_update(state):
     if state.event["time"] is None:
         return
-    now = bst.fromutc(datetime.datetime.utcnow)
+    now = bst.fromutc(datetime.datetime.utcnow())
     for pair in state.event["reminders"]:
         delta = pair[0]
         if state.event["time"] - delta < now:
@@ -49,7 +49,7 @@ async def reminder_channel(state, context, message):
 
 @tasks.loop(minutes=5)
 async def schedule_loop(states):
-    now = bst.fromutc(datetime.datetime.utcnow)
+    now = bst.fromutc(datetime.datetime.utcnow())
     for state in states:
         if state.event["time"] is None:
             continue
