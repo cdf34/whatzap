@@ -47,7 +47,7 @@ async def reminder_channel(state, context, message):
     else:
         await context.channel.send("Try either `,reminder-channel on` or `,reminder-channel off`.")
 
-@tasks.loop(minutes=5)
+@tasks.loop(minutes=1)
 async def schedule_loop(states):
     now = bst.fromutc(datetime.datetime.utcnow())
     for state in states:
