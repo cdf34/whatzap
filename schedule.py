@@ -14,6 +14,8 @@ def reminders_update(state):
         delta = pair[0]
         if state.event["time"] - delta < now:
             pair[1] = True
+        else:
+            pair[1] = False
     state.save()
 
 async def schedule(state, context, message):
@@ -40,9 +42,11 @@ async def schedule_reminders(state, context, message):
 async def reminder_channel(state, context, message):
     if message == "on":
         state.channels["reminder"].add(context.channel.id)
+        state.save()
         await state.log(context, f"Event reminders turned on in {context.channel}.")
     elif message == "off":
         state.channels["reminder"].discard(context.channel.id)
+        state.save()
         await state.log(context, f"Event reminders turned off in {context.channel}.")
     else:
         await context.channel.send("Try either `,reminder-channel on` or `,reminder-channel off`.")
