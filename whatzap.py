@@ -11,7 +11,8 @@ import schedule
 intents = discord.Intents.default()
 intents.members = True
 client = discord.Client(intents=intents)
-states = defaultdict(lambda id: State(id, client))
+states = dict()
+# states = defaultdict(lambda id: State(id, client))
 
 for str_id in os.listdir("save"):
     id = int(str_id)
@@ -20,11 +21,13 @@ for str_id in os.listdir("save"):
 @client.event
 async def on_message(message):
     try:
-        state = states[message.guild.id]
+        id = message.guild.id
+        if id not in states:
+            states[id] = State(id, client)
+        state = states[id]
         await parse_command(state, message)
     except Exception as e:
         print(message, e)
-        print(type(message.guild))
         raise
 
 @client.event
