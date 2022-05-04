@@ -8,10 +8,10 @@ from state import State
 from commands import parse_command
 import schedule
 
-states = defaultdict(lambda id: State(id, client))
 intents = discord.Intents.default()
 intents.members = True
 client = discord.Client(intents=intents)
+states = defaultdict(lambda id: State(id, client))
 
 for str_id in os.listdir("save"):
     id = int(str_id)
@@ -24,6 +24,7 @@ async def on_message(message):
         await parse_command(state, message)
     except Exception as e:
         print(message, e)
+        print(type(message.guild))
         raise
 
 @client.event
