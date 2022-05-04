@@ -62,6 +62,9 @@ async def schedule_loop(states):
                 continue
             if state.event["time"] - delta < now:
                 for channel in state.channels["reminder"]:
-                    await state.client.get_channel(channel).send(f"@everyone D&D in {text}!", allowed_mentions=discord.AllowedMentions(everyone = True))
+                    try:
+                        await state.client.get_channel(channel).send(f"@everyone D&D in {text}!", allowed_mentions=discord.AllowedMentions(everyone = True))
+                    except Exception as e:
+                        print(state, channel)
         reminders_update(state)
 
