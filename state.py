@@ -64,7 +64,11 @@ class State:
         return None, message
 
     async def fix_names_ids(self):
-        server_obj = await self.client.fetch_guild(self.server_id)
+        try:
+            server_obj = await self.client.fetch_guild(self.server_id)
+        except discord.errors.NotFound:
+            print("Guild id not found". self.server_id)
+            return
         members_to_id = {}
         async for member in server_obj.fetch_members(limit=None):
             members_to_id[str(member)] = member.id
