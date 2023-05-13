@@ -67,7 +67,7 @@ class State:
         try:
             server_obj = await self.client.fetch_guild(self.server_id)
         except discord.errors.NotFound:
-            print("Guild id not found". self.server_id)
+            print("Guild id not found", self.server_id)
             return
         members_to_id = {}
         async for member in server_obj.fetch_members(limit=None):
