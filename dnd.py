@@ -196,7 +196,7 @@ class InitiativeState:
         while True:
             reaction, user = await state.client.wait_for('reaction_add', check=check)
             if reaction.emoji == dice:
-                character = state.users.get(str(user))
+                character = state.users.get(user.id)
                 if character is not None and character.init_modifier is not None:
                     await self.add_full(state, context.channel, user, ROLL, character.init_modifier, character.name, True, False)
                 else:
@@ -244,7 +244,7 @@ class InitiativeState:
         while True:
             reaction, user = await state.client.wait_for('reaction_add', check=check)
             if reaction.emoji == dice:
-                character = state.users.get(str(user))
+                character = state.users.get(user.id)
                 if character is not None and character.init_modifier is not None:
                     await self.add_full(state, reaction.message.channel, user, ROLL, character.init_modifier, character.name, True, self.messages[reaction.message])
                 else:
@@ -334,7 +334,7 @@ def initiative_parse(args, character: bool, modifier):
 
 async def initiative_add(state, context, character, args, loud):
     if character is None:
-        author_character = state.users.get(str(context.author))
+        author_character = state.users.get(context.author.id)
         if author_character is not None:
             modifier = author_character.init_modifier
         else:

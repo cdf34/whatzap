@@ -28,7 +28,7 @@ class CharacterCommand:
     async def __call__(self, state, context, args):
         character, args = await state.find_character(context, args)
         if character:
-            if self.permissions_func(state, character, str(context.author)):
+            if self.permissions_func(state, character, context.author.id):
                 await self.func(state, context, character, args)
             else:
                 await context.channel.send(f"You do not have permission to do that to {character.name}.")
@@ -36,7 +36,7 @@ class CharacterCommand:
 class OptionalCharacterCommand(CharacterCommand):
     async def __call__(self, state, context, args):
         character, args = await state.find_character(context, args, error_on_not_found=False)
-        if character is None or self.permissions_func(state, character, str(context.author)):
+        if character is None or self.permissions_func(state, character, context.author.id):
             return await self.func(state, context, character, args)
         else:
             await context.channel.send(f"You do not have permission to do that to {character.name}.")

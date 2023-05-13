@@ -78,7 +78,7 @@ class State:
     async def find_character(self, context, message, error_on_not_found=True):
         lower = message.lower() + " "
         if lower.startswith("me "):
-            character = self.users.get(str(context.author))
+            character = self.users.get(context.author.id)
             if character:
                 return character, message[3:]
             await context.channel.send("You do not yet have a character. Create one with `,create-pc character-name`.")
@@ -95,7 +95,7 @@ class State:
                 return npc, message[len(npc.alias) + 1:]
         if message.startswith("<@") and len(context.mentions) > 0:
             if len(context.mentions) == 1:
-                character = self.users.get(str(context.mentions[0]))
+                character = self.users.get(context.mentions[0].id)
                 if character:
                     return character, message[message.index(">") + 2:]
             else:
@@ -105,7 +105,7 @@ class State:
                 id = int(id)
                 for user in context.mentions:
                     if user.id == id:
-                        character = self.users.get(str(user))
+                        character = self.users.get(user.id)
                         if character:
                             return character, message[message.index(">") + 2:]
 

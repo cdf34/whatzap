@@ -35,7 +35,7 @@ class Character:
 
     async def send_as_command(self, state, context, message):
         if self.permissions is not None:
-            if str(context.author) not in self.permissions:
+            if context.author.id not in self.permissions:
                 await context.channel.send("You do not have permission to send as that character.")
                 return          
         await context.delete()

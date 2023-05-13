@@ -2,13 +2,13 @@ from classes import NPC, Character
 import utils
 
 async def send_as_self(state, context, message):
-    character = state.users.get(str(context.author))
+    character = state.users.get(context.author.id)
     if character:
         await context.delete()
         await character.send_as(context, message)
 
 async def pc_create(state, context, name):
-    user = str(context.author)
+    user = context.author.id
     if user not in state.users:
         if await state.check_no_confusion(context, name):
             state.users[user] = Character(name=name)
@@ -111,11 +111,15 @@ async def avatar_list(state, context, character, args):
         await context.channel.send(f"{character.name} does not have any switchable avatars.")
 
 async def give_access(state, context, character, message):
+    await context.channel.send("This isn't working currently sorry")
+    return
     character.permissions.append(message)
     state.save()
     await state.log(context, f"Gave sending permissions for {character.name} to {message}.")
 
 async def remove_access(state, context, character, message):
+    await context.channel.send("This isn't working currently sorry")
+    return
     if message == str(context.author):
         await context.channel.send("You can't remove your permission to send as yourself!")
     else:
