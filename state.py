@@ -1,4 +1,5 @@
 import pickle
+import discord
 import time
 import os.path
 from collections import defaultdict
@@ -61,6 +62,18 @@ class State:
         print("Deprecated")
         lower = message.lower()
         return None, message
+
+    async def fix_names_ids(self):
+        server_obj = await self.client.fetch_guild(self.server_id)
+        members_to_id = {}
+        async for member in server_obj.fetch_members(limit=None):
+            members_to_id[str(member)] = member.id
+        strusers = [x for x in self.users if isinstance(x, str)]
+        for namedisc in strusers:
+            if namedisc in members_to_id:
+                self.users[members_to_id[namedisc]] = self.users[namedisc]
+            else:
+                print("no", namedisc, self.server_id)
 
     async def find_character(self, context, message, error_on_not_found=True):
         lower = message.lower() + " "

@@ -32,6 +32,8 @@ async def on_message(message):
 
 @client.event
 async def on_ready():
+    for state in states.values():
+        await state.fix_names_ids() 
     print('We have logged in as {0.user}'.format(client))
 
 with open('token') as f:
